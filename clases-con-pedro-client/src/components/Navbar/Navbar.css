@@ -1,0 +1,38 @@
+.navbar-container {
+  background-color: #072146;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+  align-items: center;
+}
+
+.navbar-container ul {
+  align-items: center;
+  display: flex;
+  list-style: none;
+}
+
+.navbar-container ul > li {
+  margin-right: 2rem;
+  color: #f4c249;
+}
+
+.navbar-container h3 {
+  color: white;
+  margin: 0;
+  margin-left: 4rem;
+}
+
+.navbar-container button {
+  color: white;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background: #038587 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 25px;
+  border-style: none;
+  opacity: 1;
+}
