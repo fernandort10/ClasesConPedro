@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ClasesConPedroAPI.Models
+namespace clases_con_pedro_api.Models
 {
     public class Asignatura
     {

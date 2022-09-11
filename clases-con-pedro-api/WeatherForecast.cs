@@ -1,4 +1,4 @@
-namespace ClasesConPedroAPI
+namespace clases_con_pedro_api
 {
     public class WeatherForecast
     {

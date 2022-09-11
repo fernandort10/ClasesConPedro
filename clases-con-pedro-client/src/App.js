@@ -1,11 +1,14 @@
 import MainPage from "./components/MainPage/MainPage";
-import Navbar from "./components/Navbar/Navbar";
+import { Routes, Route } from "react-router-dom";
+import Estudiantes from "./components/Estudiantes/Estudiantes";
 
 function App() {
   return (
     <div className="App">
-      <Navbar />
-      <MainPage />
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/estudiantes" element={<Estudiantes />} />
+      </Routes>
     </div>
   );
 }

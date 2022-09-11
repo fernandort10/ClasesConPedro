@@ -1,7 +1,7 @@
-﻿using ClasesConPedroAPI.Models;
+﻿using clases_con_pedro_api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ClasesConPedroAPI.Contexts
+namespace clases_con_pedro_api.Contexts
 {
     public interface IConexionSQL
     {

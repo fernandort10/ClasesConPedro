@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ClasesConPedroAPI.Models
+namespace clases_con_pedro_api.Models
 {
     public class Calificaciones
     {
