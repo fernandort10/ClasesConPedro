@@ -1,5 +1,6 @@
 .navbar-container {
   background-color: #072146;
+
   display: flex;
   justify-content: space-between;
   padding: 1rem;
@@ -14,25 +15,20 @@
 }
 
 .navbar-container ul > li {
+  text-decoration: none;
   margin-right: 2rem;
   color: #f4c249;
 }
 
 .navbar-container h3 {
+  text-decoration: none;
   color: white;
   margin: 0;
   margin-left: 4rem;
 }
 
-.navbar-container button {
+.links {
   color: white;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  background: #038587 0% 0% no-repeat padding-box;
-  box-shadow: 0px 3px 6px #00000029;
-  border-radius: 25px;
-  border-style: none;
-  opacity: 1;
+  align-items: center;
+  text-decoration: none;
 }

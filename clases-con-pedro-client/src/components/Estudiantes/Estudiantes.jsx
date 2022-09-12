@@ -25,9 +25,10 @@ export default function Estudiantes() {
 
   const handleCloseUpdate = () => setshowUpdateEstudiante(false);
   const handleShowUpdate = () => setshowUpdateEstudiante(true);
+  const [showUpdateEstudiante, setshowUpdateEstudiante] = useState(false);
 
   const [showAddEstudiante, setshowAddEstudiante] = useState(false);
-  const [showUpdateEstudiante, setshowUpdateEstudiante] = useState(false);
+
   const handleCloseAdd = () => {
     setshowAddEstudiante(false);
   };
@@ -55,9 +56,7 @@ export default function Estudiantes() {
         setEstudiantes(json.data);
         console.log(json.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const mostrarListaEstudiantes = async () => {
@@ -65,7 +64,6 @@ export default function Estudiantes() {
       .get(`${url}/api/Estudiantes`)
       .then((json) => {
         setlistaEstudiantes(json.data);
-        console.log(json.data);
       })
       .catch((err) => {
         console.log(err);
@@ -89,32 +87,41 @@ export default function Estudiantes() {
     } catch (err) {
       alert(err);
     }
+    window.location.reload(false);
   };
 
   const handleSubmitUpdate = (e) => {
     e.preventDefault();
     const userData = {
-      id_calificacion: data.id_calificacion,
-      id_estudiante: data.id_estudiante,
-      id_asignatura: data.id_asignatura,
-      calificacion: data.calificacion,
+      id_calificaciones: data2.id_calificaciones,
+      id_estudiante: data2.id_estudiante,
+      id_asignatura: data2.id_asignatura,
+      calificacion: data2.calificacion,
     };
     try {
-      axios.put(`${url}/api/Calificaciones/${userData.id_calificacion}`, {
-        id_calificaciones: 0,
-        id_estudiante: 0,
-        id_asignatura: 0,
-        calificacion: 0,
+      axios.put(`${url}/api/Calificaciones/${userData.id_calificaciones}`, {
+        id_calificaciones: data2.id_calificaciones,
+        id_estudiante: data2.id_estudiante,
+        id_asignatura: data2.id_asignatura,
+        calificacion: data2.calificacion,
       });
       console.log("actualizado exitosamente");
     } catch (err) {
       alert(err);
     }
+    window.location.reload(false);
   };
+
+  const [data2, setData2] = useState({
+    id_calificaciones: 0,
+    id_estudiante: 0,
+    id_asignatura: 0,
+    calificacion: 0,
+  });
 
   const [data, setData] = useState({
     nombreEstudiante: "",
-    id_calificacion: 0,
+    id_calificaciones: 0,
     id_estudiante: 0,
     id_asignatura: 0,
     calificacion: 0,
@@ -152,7 +159,15 @@ export default function Estudiantes() {
     });
   };
 
-  console.log(data);
+  const handleChange2 = (e) => {
+    const value = e.target.value;
+    setData2({
+      ...data2,
+      [e.target.name]: value,
+    });
+  };
+
+  console.log(data2);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -166,6 +181,7 @@ export default function Estudiantes() {
         console.log(response.status);
         console.log(response.data.token);
       });
+    window.location.reload(false);
   };
 
   const handleSubmitEA = (e) => {
@@ -268,7 +284,7 @@ export default function Estudiantes() {
             Close
           </Button>
           <Button type="submit" variant="primary" onClick={handleSubmit}>
-            Save Changes
+            Guardar Cambios
           </Button>
         </Modal.Footer>
       </Modal>
@@ -348,7 +364,7 @@ export default function Estudiantes() {
             Close
           </Button>
           <Button type="submit" variant="primary" onClick={handleSubmitEA}>
-            Save Changes
+            Guardar Cambios
           </Button>
         </Modal.Footer>
       </Modal>
@@ -365,9 +381,9 @@ export default function Estudiantes() {
                 type="text"
                 placeholder="Inserte el id de la claificacion"
                 autoFocus
-                name="id_calificacion"
-                value={data.id_calificacion}
-                onChange={handleChange}
+                name="id_calificaciones"
+                value={data2.id_calificaciones}
+                onChange={handleChange2}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -377,8 +393,8 @@ export default function Estudiantes() {
                 placeholder="Inserte el id del estudiante"
                 autoFocus
                 name="id_estudiante"
-                value={data.id_estudiante}
-                onChange={handleChange}
+                value={data2.id_estudiante}
+                onChange={handleChange2}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -388,8 +404,8 @@ export default function Estudiantes() {
                 placeholder="Inserte el id de la asignatura"
                 autoFocus
                 name="id_asignatura"
-                value={data.id_asignatura}
-                onChange={handleChange}
+                value={data2.id_asignatura}
+                onChange={handleChange2}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -399,8 +415,8 @@ export default function Estudiantes() {
                 placeholder="Inserte la calificacion"
                 autoFocus
                 name="calificacion"
-                value={data.calificacion}
-                onChange={handleChange}
+                value={data2.calificacion}
+                onChange={handleChange2}
               />
             </Form.Group>
           </Form>
@@ -410,7 +426,7 @@ export default function Estudiantes() {
             Close
           </Button>
           <Button type="submit" variant="primary" onClick={handleSubmitUpdate}>
-            Save Changes
+            Guardar Cambios
           </Button>
         </Modal.Footer>
       </Modal>

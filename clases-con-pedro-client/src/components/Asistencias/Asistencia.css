@@ -1,6 +1,14 @@
 .containers {
 }
 
-.containers > h1 {
+.titulo-boton {
   text-align: center;
+  align-content: center;
+}
+
+.container1 {
+  padding-bottom: 5rem;
+}
+
+.boton-abrir-asistencia {
 }
