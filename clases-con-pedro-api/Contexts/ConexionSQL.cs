@@ -15,7 +15,7 @@ namespace clases_con_pedro_api.Contexts
             public DbSet<Estudiantes> Estudiantes { get; set; }
             public DbSet<Calificaciones> Calificaciones { get; set; }
             public DbSet<Asignatura> Asignatura { get; set; }
-            public DbSet<clases_con_pedro_api.Models.Estudiante_Asignatura>? Estudiante_Asignatura { get; set; }
+            public DbSet<Asistencia> Asistencia { get; set; }
         }
     
 }

@@ -10,6 +10,7 @@ import ListaAsignatura from "../Asignaturas/ListaAsignatura";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import Table from "react-bootstrap/Table";
 
 export default function Estudiantes() {
   const [estudiantes, setEstudiantes] = useState([]);
@@ -19,11 +20,26 @@ export default function Estudiantes() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const handleCloseDelete = () => setShow(false);
+  const handleShowDelete = () => setShow(true);
+
+  const handleCloseUpdate = () => setshowUpdateEstudiante(false);
+  const handleShowUpdate = () => setshowUpdateEstudiante(true);
+
   const [showAddEstudiante, setshowAddEstudiante] = useState(false);
-  const handleCloseAdd = () => setshowAddEstudiante(false);
+  const [showUpdateEstudiante, setshowUpdateEstudiante] = useState(false);
+  const handleCloseAdd = () => {
+    setshowAddEstudiante(false);
+  };
+
   const handleShowAdd = () => setshowAddEstudiante(true);
 
   const [showEstudiantes, setshowEstudiante] = useState(false);
+  const [showAddEstudiantes, setshowAddEstudiantes] = useState(false);
+
+  const handleShowAddEs = () => setshowAddEstudiantes(true);
+  const handleCloseAddEs = () => setshowAddEstudiantes(false);
+
   const handleCloseShow = () => setshowEstudiante(false);
   const handleShowShow = () => {
     setshowEstudiante(true);
@@ -56,6 +72,58 @@ export default function Estudiantes() {
       });
   };
 
+  const handleSubmitDelete = (e) => {
+    e.preventDefault();
+    const userData = {
+      id_calificacion: data.id_calificacion,
+      id_estudiante: data.id_estudiante,
+      id_asignatura: data.id_asignatura,
+      calificacion: data.calificacion,
+    };
+    try {
+      axios.delete(
+        `https://localhost:7132/api/Estudiantes/${userData.id_estudiante}`,
+        userData
+      );
+      console.log("borrado exitosamente");
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const handleSubmitUpdate = (e) => {
+    e.preventDefault();
+    const userData = {
+      id_calificacion: data.id_calificacion,
+      id_estudiante: data.id_estudiante,
+      id_asignatura: data.id_asignatura,
+      calificacion: data.calificacion,
+    };
+    try {
+      axios.put(`${url}/api/Calificaciones/${userData.id_calificacion}`, {
+        id_calificaciones: 0,
+        id_estudiante: 0,
+        id_asignatura: 0,
+        calificacion: 0,
+      });
+      console.log("actualizado exitosamente");
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const [data, setData] = useState({
+    nombreEstudiante: "",
+    id_calificacion: 0,
+    id_estudiante: 0,
+    id_asignatura: 0,
+    calificacion: 0,
+  });
+
+  //   const addEstudiante = async () => {
+  //     axios.post(`${url}/api/Estudiantes`).then(())
+  //   };
+
   useEffect(() => {
     mostrarEstudiantes();
   }, []);
@@ -69,12 +137,54 @@ export default function Estudiantes() {
   );
 
   const naturales = estudiantes.filter(
-    (e) => e.nombreAsignatura === "Ciencias Naturales"
+    (e) => e.nombreAsignatura === "Ciencias Sociales"
   );
 
   const español = estudiantes.filter(
     (e) => e.nombreAsignatura === "Lengua Española"
   );
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setData({
+      ...data,
+      [e.target.name]: value,
+    });
+  };
+
+  console.log(data);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const userData = {
+      nombreEstudiante: data.nombreEstudiante,
+    };
+
+    axios
+      .post("https://localhost:7132/api/Estudiantes", userData)
+      .then((response) => {
+        console.log(response.status);
+        console.log(response.data.token);
+      });
+  };
+
+  const handleSubmitEA = (e) => {
+    e.preventDefault();
+    const userData = {
+      id_estudiante: data.id_estudiante,
+      id_asignatura: data.id_asignatura,
+      calificacion: data.calificacion,
+    };
+    console.log(userData);
+    axios
+      .post("https://localhost:7132/api/Calificaciones", userData)
+      .then((response) => {
+        console.log(response.status);
+        console.log(response.data.token);
+      });
+
+    window.location.reload(false);
+  };
 
   return (
     <div>
@@ -93,7 +203,7 @@ export default function Estudiantes() {
           <Button
             className="boton-abrir"
             variant="primary"
-            onClick={handleShow}
+            onClick={handleShowAddEs}
           >
             Añadir Estudiante
           </Button>
@@ -103,7 +213,23 @@ export default function Estudiantes() {
             variant="primary"
             onClick={handleShowAdd}
           >
-            Añadir Asignatura
+            Añadir Estudiante a Asignatura
+          </Button>
+
+          <Button
+            className="boton-abrir"
+            variant="primary"
+            onClick={handleShowUpdate}
+          >
+            Actualizar Estudiante
+          </Button>
+
+          <Button
+            className="boton-abrir"
+            variant="danger"
+            onClick={handleShowDelete}
+          >
+            Eliminar Estudiante
           </Button>
         </div>
         <div className="estudiantes-container">
@@ -117,44 +243,80 @@ export default function Estudiantes() {
         </div>
       </div>
       <Footer />
-      <Modal show={show} onHide={handleClose}>
+
+      <Modal show={showAddEstudiantes} onHide={handleCloseAddEs}>
         <Modal.Header closeButton>
           <Modal.Title>Añadir Estudiante</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Nombre</Form.Label>
               <Form.Control
-                type="email"
+                type="text"
                 placeholder="Inserte el nombre del estudiante"
+                name="nombreEstudiante"
+                value={data.nombreEstudiante}
                 autoFocus
+                onChange={handleChange}
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleCloseAddEs}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button type="submit" variant="primary" onClick={handleSubmit}>
             Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={show} onHide={handleCloseDelete}>
+        <Modal.Header closeButton>
+          <Modal.Title>Eliminar Estudiante</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Id</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Inserte el id del estudiante"
+                name="id_estudiante"
+                value={data.id_estudiante}
+                autoFocus
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseDelete}>
+            Close
+          </Button>
+          <Button type="submit" variant="danger" onClick={handleSubmitDelete}>
+            Borrar Estudiante
           </Button>
         </Modal.Footer>
       </Modal>
 
       <Modal show={showAddEstudiante} onHide={handleCloseAdd}>
         <Modal.Header closeButton>
-          <Modal.Title>Añadir Asignatura</Modal.Title>
+          <Modal.Title>Añadir Estudiante a Asignatura</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleSubmitEA}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Id del estudiante</Form.Label>
               <Form.Control
                 type="email"
                 placeholder="Inserte el id del estudiante"
                 autoFocus
+                name="id_estudiante"
+                value={data.id_estudiante}
+                onChange={handleChange}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -163,15 +325,91 @@ export default function Estudiantes() {
                 type="email"
                 placeholder="Inserte el id de la asignatura"
                 autoFocus
+                name="id_asignatura"
+                value={data.id_asignatura}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Calificacion</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Inserte la calificacion"
+                autoFocus
+                name="calificacion"
+                value={data.calificacion}
+                onChange={handleChange}
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseAdd}>
+          <Button variant="secondary" onClick={handleCloseUpdate}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCloseAdd}>
+          <Button type="submit" variant="primary" onClick={handleSubmitEA}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showUpdateEstudiante} onHide={handleCloseUpdate}>
+        <Modal.Header closeButton>
+          <Modal.Title>Actualizar Estudiante</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmitUpdate}>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Id de la calificacion</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Inserte el id de la claificacion"
+                autoFocus
+                name="id_calificacion"
+                value={data.id_calificacion}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Id del Estudiante</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Inserte el id del estudiante"
+                autoFocus
+                name="id_estudiante"
+                value={data.id_estudiante}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Id de la asignatura</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Inserte el id de la asignatura"
+                autoFocus
+                name="id_asignatura"
+                value={data.id_asignatura}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Calificacion</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Inserte la calificacion"
+                autoFocus
+                name="calificacion"
+                value={data.calificacion}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseUpdate}>
+            Close
+          </Button>
+          <Button type="submit" variant="primary" onClick={handleSubmitUpdate}>
             Save Changes
           </Button>
         </Modal.Footer>
@@ -179,10 +417,10 @@ export default function Estudiantes() {
 
       <Modal show={showEstudiantes} onHide={handleCloseShow}>
         <Modal.Header closeButton>
-          <Modal.Title>Añadir Asignatura</Modal.Title>
+          <Modal.Title>Lista de Estudiantes</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <table>
+          <Table striped>
             <thead>
               <tr>
                 <th>Id del estudiante</th>
@@ -197,14 +435,11 @@ export default function Estudiantes() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </Table>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseShow}>
             Close
-          </Button>
-          <Button variant="primary" onClick={handleCloseShow}>
-            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>

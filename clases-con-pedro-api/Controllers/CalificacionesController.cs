@@ -37,7 +37,7 @@ namespace clases_con_pedro_api.Controllers
             var estudiantesConCalificaciones = (from a in _context.Calificaciones
                                                 join c in _context.Estudiantes on a.id_estudiante equals c.id_estudiante
                                                 join b in _context.Asignatura on a.id_asignatura equals b.id_asignatura
-                                                select new CalificacionesDTO(c.NombreEstudiante, b.NombreAsignatura, a.calificacion)).ToList();
+                                                select new CalificacionesDTO(a.id_calificaciones, c.NombreEstudiante, b.NombreAsignatura, a.calificacion)).ToList();
 
             return estudiantesConCalificaciones;
         }

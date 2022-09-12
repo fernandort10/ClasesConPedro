@@ -8,5 +8,6 @@ namespace clases_con_pedro_api.Contexts
         DbSet<Asignatura> Asignatura { get; set; }
         DbSet<Calificaciones> Calificaciones { get; set; }
         DbSet<Estudiantes> Estudiantes { get; set; }
+        DbSet<Asistencia> Asistencia { get; set; }
     }
 }
